@@ -3,6 +3,7 @@ package org.example;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.Scanner;
 
 public class Usuario {
 
@@ -64,14 +65,48 @@ public class Usuario {
         }
     }
 
-    // Metodo para modificar cliente (por implementar)
-    public void modificarCliente() {
-        // Llamar a ConsultaBase.actualizarDatosCliente cuando este implementado
-    }
+//Metodo para modificar cliente
+public void modificarCliente() {
+    Scanner entrada = new Scanner(System.in);
 
-    // Metodo para mostrar informacion (por implementar)
+    System.out.println("Ingrese el nuevo nombre:");
+    this.nombre = entrada.nextLine();
+
+    System.out.println("Ingrese el nuevo apellido:");
+    this.apellido = entrada.nextLine();
+
+    System.out.println("Ingrese la nueva direccion:");
+    this.direccion = entrada.nextLine();
+
+    // Validar correo
+    do {
+        System.out.println("Ingrese el nuevo correo:");
+        this.correo = entrada.nextLine();
+        if (!this.correo.contains("@")) {
+            System.out.println("Correo invalido. Debe contener al menos un '@'. Intente de nuevo.");
+        }
+    } while (!this.correo.contains("@"));
+
+    // Validar telefono para que solo tenga numeros
+    //no puede contener ni ´-¨ o espacios
+    do {
+        System.out.println("Ingrese el nuevo telefono:");
+        this.telefono = entrada.nextLine();
+        if (!this.telefono.matches("\\d+")) { //va a buscar el cadena solo numeros
+            System.out.println("Telefono invalido. Debe contener solo numeros. Intente de nuevo.");
+        }
+    } while (!this.telefono.matches("\\d+")); //solo se sale del bucle cuando el telefono son solo numeros
+
+    System.out.println("¿El cliente sigue activo? (true/false):");
+    this.activo = Boolean.parseBoolean(entrada.nextLine());
+
+    ConsultaBase.getInstance().actualizarDatosCliente(this.dni, this.nombre, this.apellido, this.direccion, this.correo, this.telefono, this.activo);
+}
+
+    // Metodo para mostrar informacion de un solo cliente
     public void mostrarInfoCliente() {
         // Traer info de la base y mostrar
+        //COMPLETAR//
     }
 
 
@@ -132,3 +167,15 @@ public class Usuario {
         this.telefono = telefono;
     }
 }
+/*
+COMENTARIOS
+-----------------------------------------------------------------------------------------------------------
+A la hora de pasar el nuevo telefono, este se tiene que pasar sin espacios o guiones
+ej: 54926398772346
+Esto se podria modificar en un excel separando asi: 54 9 263 9877 2346
+
+Hay que hacer lo mismo con el dni, ademas de encontrar una forma de pasar el id(int) que el dni(string)
+para las busquedas. Por temas de eficiencia
+------------------------------------------------------------------------------------------------------------
+
+ */

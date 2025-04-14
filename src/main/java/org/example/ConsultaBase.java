@@ -4,12 +4,14 @@ y la principal, ya que de ella depende la mayoria de metodos
 
 /*Tareas
 --Modificar los datos de la conexion con los adecuados
+--Completar el metodo listarClientes
 --
 */
 package org.example;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class ConsultaBase {
@@ -68,9 +70,39 @@ public class ConsultaBase {
          */
     }
 
-    public void actualizarDatosClinte(String nombre, String apellido, String direccion, String correo, String telefono){
-        //aca se deberia llamar al metodo de buscarCliente
+    public void actualizarDatosCliente(String dni, String nombre, String apellido, String direccion, String correo, String telefono, boolean activo) {
+        //aca se llama al metodo de buscarCliente
         //y luego empezar a pasar los valores nuevos
+        if (buscarCliente(dni)) {
+            String actualizarSQL = "UPDATE usuarios SET nombre = ?, apellido = ?, direccion = ?, correo = ?, telefono = ?, activo = ? WHERE dni = ?";
+
+            //si encuentra el cliente pasa los datos a actualizar
+            try (PreparedStatement updateSQL = conexion.prepareStatement(actualizarSQL)) {
+                updateSQL.setString(1, nombre);
+                updateSQL.setString(2, apellido);
+                updateSQL.setString(3, direccion);
+                updateSQL.setString(4, correo);
+                updateSQL.setString(5, telefono);
+                updateSQL.setBoolean(6, activo); // aca usamos setBoolean
+                updateSQL.setString(7, dni);
+
+                //verficacion acerca si se actualizo el cliente
+                int filasActualizadas = updateSQL.executeUpdate();
+                //si las filas son mas de 1, se actualizo
+                if (filasActualizadas > 0) {
+                    System.out.println("Cliente actualizado correctamente.");
+                } else {
+                    System.out.println("No se encontró cliente con ese DNI.");
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error al actualizar cliente: " + e.getMessage());
+            }
+        }
+    }
+
+    public void listarClientes(){
+        //completar
     }
 
     // Getter para la conexion
