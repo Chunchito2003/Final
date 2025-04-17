@@ -4,7 +4,6 @@ y la principal, ya que de ella depende la mayoria de metodos
 
 /*Tareas
 --Modificar los datos de la conexion con los adecuados
---Completar el metodo listarClientes
 --
 */
 package org.example;
@@ -101,9 +100,6 @@ public class ConsultaBase {
         }
     }
 
-    public void listarClientes(){
-        //completar
-    }
 
     // Getter para la conexion
     public Connection getConexion() {
@@ -111,4 +107,12 @@ public class ConsultaBase {
     }
 }
 
+/*
+COMENTARIOS
+-----------------------------------------------------------------------------------------------------------
+A esta clase luego hay que agregarle metodos que listen todos los clientes, prestamos y pagos
+ademas en esta clase solo va a hacer búsquedas y actualizaciones
+El registro y listar individualmente los haran las clases correspondientes
+------------------------------------------------------------------------------------------------------------
 
+ */

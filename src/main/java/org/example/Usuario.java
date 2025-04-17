@@ -103,11 +103,41 @@ public void modificarCliente() {
     ConsultaBase.getInstance().actualizarDatosCliente(this.dni, this.nombre, this.apellido, this.direccion, this.correo, this.telefono, this.activo);
 }
 
+
     // Metodo para mostrar informacion de un solo cliente
-    public void mostrarInfoCliente() {
-        // Traer info de la base y mostrar
-        //COMPLETAR//
+    public void mostrarInfoCliente(String dni) {
+        Connection conn = ConsultaBase.getInstance().getConexion();
+
+        //consulta SQL
+        String listarSQL = "SELECT * FROM usuarios WHERE dni = ?";
+
+        //se prepara la consulta y se ejecuta
+        try (PreparedStatement solicitud = conn.prepareStatement(listarSQL)) {
+            solicitud.setString(1, dni);
+            var respuesta = solicitud.executeQuery();
+
+            //se muestra toda la informacion de un solo cliente
+            if (respuesta.next()) {
+
+                System.out.println("=== Informacion del Cliente ===");
+                System.out.println("ID: " + respuesta.getInt("id"));
+                System.out.println("DNI: " + respuesta.getString("dni"));
+                System.out.println("Nombre: " + respuesta.getString("nombre"));
+                System.out.println("Apellido: " + respuesta.getString("apellido"));
+                System.out.println("Dirección: " + respuesta.getString("direccion"));
+                System.out.println("Correo: " + respuesta.getString("correo"));
+                System.out.println("Telefono: " + respuesta.getString("telefono"));
+                System.out.println("Activo: " + respuesta.getBoolean("activo"));
+
+            } else {
+                System.out.println("Cliente no encontrado.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error al mostrar cliente: " + e.getMessage());
+        }
     }
+
 
 
     // Getters y Setters
@@ -177,5 +207,7 @@ Esto se podria modificar en un excel separando asi: 54 9 263 9877 2346
 Hay que hacer lo mismo con el dni, ademas de encontrar una forma de pasar el id(int) que el dni(string)
 para las busquedas. Por temas de eficiencia
 ------------------------------------------------------------------------------------------------------------
-
+Elgi que el metodo de mostrarCliente se ubique en la clase usuario y no la clase de la Base
+ya que siento que es delegar tareas adicionales a la base que la clase usuario puede resolver
+asi que simplemente llamo a la conexion y no creo un metodo que llame a otro metodo y que hacen lo mismo
  */
